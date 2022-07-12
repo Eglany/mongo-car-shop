@@ -13,13 +13,15 @@ abstract class MongoModel<T> implements Model<T> {
     return newItem;
   }
 
-  // read(item: T[]): Promise<T> {
-  //   throw new Error('Method not implemented.');
-  // }
+  async read(): Promise<T[]> {
+    const allItems = await this._mongooseModel.find();
+    return allItems;
+  }
 
-  // readOne(item: string): Promise<T> | null {
-  //   throw new Error('Method not implemented.');
-  // }
+  async readOne(item: string): Promise<T> | null {
+    const getItem = await this._mongooseModel.findOne({ _id: item });
+    return allItems;
+  }
 
   async update(itemA: string, { itemB }: { itemB: T }): Promise<T | null> {
     const updatedItem = this._mongooseModel
@@ -27,7 +29,7 @@ abstract class MongoModel<T> implements Model<T> {
     return updatedItem;
   }
 
-  // delete(itemA: string, { itemB }: { itemB: T; }): Promise<T | null> {
+  // async delete(itemA: string, { itemB }: { itemB: T; }): Promise<T | null> {
   //   throw new Error('Method not implemented.');
   // }
 }

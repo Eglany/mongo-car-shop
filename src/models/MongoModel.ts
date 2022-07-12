@@ -2,7 +2,7 @@ import { Model as MongooseModel } from 'mongoose';
 import { Model } from '../interfaces/ModelInterface';
  
 abstract class MongoModel<T> implements Model<T> {
-  private _mongooseModel: MongooseModel<T>;
+  protected _mongooseModel: MongooseModel<T>;
 
   constructor(mongooseModel: MongooseModel<T>) {
     this._mongooseModel = mongooseModel;

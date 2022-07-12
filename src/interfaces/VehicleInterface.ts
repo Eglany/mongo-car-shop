@@ -5,7 +5,7 @@ export const VehicleSchema = z.object({
   year: z.number().lte(1900).gte(2022),
   color: z.string().min(3),
   status: z.boolean().optional(),
-  buyVelue: z.number().int(),
+  buyValue: z.number().int(),
 });
 
 export type Vehicle = z.infer<typeof VehicleSchema>;

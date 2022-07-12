@@ -1,23 +1,23 @@
-import { ZodError } from 'zod';
 import { Model } from '../interfaces/ModelInterface';
-
-export interface ServiceError {
-  error: ZodError;
-}
-abstract class Service<T> {
+import { ServiceError } from '../interfaces/ServiceInterface';
+abstract class GenericService<T> {
   constructor(protected model: Model<T>) { }
 
-  public async create(obj: T): Promise<T | null | ServiceError> {
-    return this.model.create(obj);
+  async create(item: T): Promise<T | null | ServiceError> {
+    return this.model.create(item);
   }
 
-  public async read(): Promise<T[]> {
+  async read(): Promise<T[]> {
     return this.model.read();
   }
 
-  public async readOne(id: string): Promise<T | null | ServiceError> {
+  async readOne(id: string): Promise<T | null | ServiceError> {
     return this.model.readOne(id);
+  }
+
+  async update(id: string, item: T): : Promise<T | null > {
+    return this.model.update(id, item);
   }
 }
 
-export default Service;
+export default GenericService;

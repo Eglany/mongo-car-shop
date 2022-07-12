@@ -8,7 +8,7 @@ abstract class MongoModel<T> implements Model<T> {
     this._mongooseModel = mongooseModel;
   }
 
-  async create({ item }: { item: T; }): Promise<T> {
+  async create(item: T): Promise<T> {
     const newItem = await this._mongooseModel.create(item);
     return newItem;
   }
@@ -23,7 +23,7 @@ abstract class MongoModel<T> implements Model<T> {
     return getItem;
   }
 
-  async update(itemA: string, { itemB }: { itemB: T }): Promise<T | null> {
+  async update(itemA: string, itemB: T): Promise<T | null> {
     const updatedItem = await this._mongooseModel
       .findOneAndUpdate({ _id: itemA }, itemB, { returnOriginal: false });
     return updatedItem;

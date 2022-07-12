@@ -1,6 +1,6 @@
 import { Document, Model, Schema } from 'mongoose';
+import GenericService from '.';
 import { Car } from '../interfaces/CarInterface';
-import MongoModel from './MongoModel';
 // import {Model} from '../interfaces/ModelInterface'
  
 interface CarDocument extends Car, Document { }
@@ -17,7 +17,7 @@ const carDocument = new Schema<CarDocument>({
   versionKey: false,
 });
 
-class CarModel extends MongoModel<Car> {
+class CarModel extends GenericService<Car> {
   constructor(model = new Model('Car', carDocument)) {
     super(model);
   }

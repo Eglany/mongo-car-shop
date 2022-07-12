@@ -1,7 +1,7 @@
 import { Model as MongooseModel } from 'mongoose';
 import { Model } from '../interfaces/ModelInterface';
  
-abstract class MongoModel<T> implements Model<T> {
+abstract class GenericService<T> implements Model<T> {
   protected _mongooseModel: MongooseModel<T>;
 
   constructor(mongooseModel: MongooseModel<T>) {
@@ -36,4 +36,4 @@ abstract class MongoModel<T> implements Model<T> {
   }
 }
 
-export default MongoModel;
+export default GenericService;

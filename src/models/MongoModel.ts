@@ -18,20 +18,22 @@ abstract class MongoModel<T> implements Model<T> {
     return allItems;
   }
 
-  async readOne(item: string): Promise<T> | null {
+  async readOne(item: string): Promise<T | null> {
     const getItem = await this._mongooseModel.findOne({ _id: item });
-    return allItems;
+    return getItem;
   }
 
   async update(itemA: string, { itemB }: { itemB: T }): Promise<T | null> {
-    const updatedItem = this._mongooseModel
+    const updatedItem = await this._mongooseModel
       .findOneAndUpdate({ _id: itemA }, itemB, { returnOriginal: false });
     return updatedItem;
   }
 
-  // async delete(itemA: string, { itemB }: { itemB: T; }): Promise<T | null> {
-  //   throw new Error('Method not implemented.');
-  // }
+  async delete(item: string): Promise<T | null> {
+    const destroyItem = await this._mongooseModel
+      .findOneAndDelete({ _id: item });
+    return destroyItem;
+  }
 }
 
 export default MongoModel;

@@ -23,20 +23,9 @@ abstract class GenericController<T> {
 
   constructor(protected service: Service<T>) { }
 
-  async create(
+  abstract create(
     request: RequestWithBody<T>,
     response: Response<T | ResponseError>,
-  ): Promise<typeof response> {
-    try {
-      const newCar = await this.service.create(request.body);
-      if (newCar) {
-        return response.status(201).json(newCar);
-      }
-      return response.status(400).json({ error: this.errors.notFound });
-    } catch (error) {
-      console.log(error);
-      return response.status(500).json({ error: this.errors.internal });
-    }
-  }
+  ): Promise<typeof response>;
 }
 export default GenericController;

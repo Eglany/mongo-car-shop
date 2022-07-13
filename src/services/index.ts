@@ -1,10 +1,10 @@
 import { Model } from '../interfaces/ModelInterface';
-import { Service } from '../interfaces/ServiceInterface';
+import { Service, ServiceError } from '../interfaces/ServiceInterface';
 
 abstract class GenericService<T> implements Service<T> {
   constructor(protected model: Model<T>) { }
 
-  async create(item: T): Promise<T | null > {
+  async create(item: T): Promise<T | ServiceError | null > {
     return this.model.create(item);
   }
 

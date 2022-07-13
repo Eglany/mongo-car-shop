@@ -1,4 +1,4 @@
-import { Document, Model as MongooseModel } from 'mongoose';
+import { Document, isValidObjectId, Model as MongooseModel } from 'mongoose';
 import { Model } from '../interfaces/ModelInterface';
  
 abstract class GenericService<T> implements Model<T> {
@@ -14,20 +14,25 @@ abstract class GenericService<T> implements Model<T> {
     return allItems;
   }
 
-  async readOne(item: string): Promise<T | null> {
-    const getItem = await this.mongooseModel.findOne({ _id: item });
+  async readOne(id: string): Promise<T | null> {
+    if (!isValidObjectId(id)) return null;
+    const getItem = await this.mongooseModel.findOne({ _id: id });
     return getItem;
   }
 
-  async update(itemA: string, itemB: T): Promise<T | null> {
+  async update(id: string, itemB: T): Promise<T | null> {
+    if (!isValidObjectId(id)) return null;
+
     const updatedItem = await this.mongooseModel
-      .findOneAndUpdate({ _id: itemA }, itemB, { returnOriginal: false });
+      .findOneAndUpdate({ _id: id }, itemB, { returnOriginal: false });
     return updatedItem;
   }
 
-  async delete(item: string): Promise<T | null> {
+  async delete(id: string): Promise<T | null> {
+    if (!isValidObjectId(id)) return null;
+
     const destroyItem = await this.mongooseModel
-      .findOneAndDelete({ _id: item });
+      .findOneAndDelete({ _id: id });
     return destroyItem;
   }
 }

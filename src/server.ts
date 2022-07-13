@@ -5,10 +5,9 @@ import CustomRouter from './routes/carRouter';
 
 const server = new App();
 
-const carControoler = new CarController();
-
+const carController = new CarController();
 const carRouter = new CustomRouter<Car>();
-carRouter.addRoute(carControoler);
+carRouter.addRoute(carController);
 
 server.addRouter(carRouter.router);
 

@@ -1,5 +1,3 @@
-// src/controllers/index.ts
-
 import { Request, Response } from 'express';
 import { Service } from '../interfaces/ServiceInterface';
 
@@ -36,27 +34,9 @@ abstract class GenericController<T> {
       }
       return response.status(400).json({ error: this.errors.notFound });
     } catch (error) {
-      console.log(error)
-      return response.status(500).json({error: this.errors.internal})
+      console.log(error);
+      return response.status(500).json({ error: this.errors.internal });
     }
-
   }
-
-  async read(
-    _req: Request,
-    res: Response<T[] | ResponseError>,
-  ): Promise<typeof res> => {
-    try {
-      const objs = await this.service.read();
-      return res.json(objs);
-    } catch (err) {
-      return res.status(500).json({ error: this.errors.internal });
-    }
-  };
-
-  abstract readOne(
-    req: Request<{ id: string; }>,
-    res: Response<T | ResponseError>
-  ): Promise<typeof res>;
 }
 export default GenericController;

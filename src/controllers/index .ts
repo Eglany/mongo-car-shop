@@ -1,7 +1,7 @@
 // src/controllers/index.ts
 
 import { Request, Response } from 'express';
-import Service from '../services';
+import { Service } from '../interfaces/ServiceInterface';
 
 export type ResponseError = {
   error: unknown;
@@ -18,19 +18,31 @@ enum ControllerErrors {
   badRequest = 'Bad request',
 }
 
-abstract class Controller<T> {
+abstract class GenericController<T> {
   abstract route: string;
 
   protected errors = ControllerErrors;
 
   constructor(protected service: Service<T>) { }
 
-  abstract create(
-    req: RequestWithBody<T>,
-    res: Response<T | ResponseError>,
-  ): Promise<typeof res>;
+  async create(
+    request: RequestWithBody<T>,
+    response: Response<T | ResponseError>,
+  ): Promise<typeof response> {
+    try {
+      const newCar = await this.service.create(request.body);
+      if (newCar) {
+        return response.status(201).json(newCar);
+      }
+      return response.status(400).json({ error: this.errors.notFound });
+    } catch (error) {
+      console.log(error)
+      return response.status(500).json({error: this.errors.internal})
+    }
 
-  read = async (
+  }
+
+  async read(
     _req: Request,
     res: Response<T[] | ResponseError>,
   ): Promise<typeof res> => {
@@ -47,4 +59,4 @@ abstract class Controller<T> {
     res: Response<T | ResponseError>
   ): Promise<typeof res>;
 }
-export default Controller;
+export default GenericController;

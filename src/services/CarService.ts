@@ -9,12 +9,10 @@ class CarService extends GenericService<Car> {
   }
 
   async create(item: Car): Promise<Car | ServiceError | null > {
-    console.log('entrando na service ...');
-    
     const parsed = CarSchema.safeParse(item);
-    
-    if (!parsed.success) return { error: parsed.error }; 
-    return this.model.create(item);
+    if (!parsed.success) return { error: parsed.error };
+    const createdCar = await this.model.create(item);
+    return createdCar;
   }
 }
 

@@ -22,13 +22,13 @@ class CarController extends GenericController<Car> {
     response: Response<Car | ResponseError>,
   ): Promise<typeof response> {
     try {
-      console.log(request.body);
       const newCar = await this.service.create(request.body);
-      
-      if (newCar) {
-        return response.status(201).json(newCar);
+      console.log(newCar);
+      if (!newCar) {
+        return response.status(400).json({ error: this.errors.notFound });
       }
-      return response.status(400).json({ error: this.errors.notFound });
+      if ('error' in newCar) return response.status(400).json(newCar);
+      return response.status(201).json(newCar);
     } catch (error) {
       console.log(error);
       return response.status(500).json({ error: this.errors.internal });

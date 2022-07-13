@@ -30,7 +30,6 @@ abstract class GenericService<T> implements Model<T> {
 
   async delete(id: string): Promise<T | null> {
     if (!isValidObjectId(id)) return null;
-
     const destroyItem = await this.mongooseModel
       .findOneAndDelete({ _id: id });
     return destroyItem;

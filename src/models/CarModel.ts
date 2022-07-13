@@ -1,4 +1,4 @@
-import { Document, Model, Schema } from 'mongoose';
+import { Document, model as createModel, Schema } from 'mongoose';
 import GenericService from '.';
 import { Car } from '../interfaces/CarInterface';
 // import {Model} from '../interfaces/ModelInterface'
@@ -18,7 +18,7 @@ const carDocument = new Schema<CarDocument>({
 });
 
 class CarModel extends GenericService<Car> {
-  constructor(model = new Model('Car', carDocument)) {
+  constructor(model = createModel('Car', carDocument)) {
     super(model);
   }
 }

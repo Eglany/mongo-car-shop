@@ -34,6 +34,21 @@ class CarController extends GenericController<Car> {
       return response.status(500).json({ error: this.errors.internal });
     }
   }
+
+  async read(
+    _request: RequestWithBody<Car>,
+    response: Response<Car[] | ResponseError>,
+  ): Promise<typeof response> {
+    try {
+      const car = await this.service.read();
+      if (!car) return response.status(200).json([]);
+      console.log(car);
+      return response.status(200).json(car);
+    } catch (error) {
+      console.log(error);
+      return response.status(500).json({ error: this.errors.internal });
+    }
+  }
 }
 
 export default CarController;

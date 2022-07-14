@@ -15,6 +15,7 @@ class CustomRouter<T> {
     // this.router.get(route, controller.read);
     // this.router.get(`${route}/:id`, controller.readOne);
     this.router.post(route, (req, res) => controller.create(req, res));
+    this.router.get(route, (req, res) => controller.read(req, res));
   }
 }
 

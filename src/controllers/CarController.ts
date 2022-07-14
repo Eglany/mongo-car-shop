@@ -23,7 +23,6 @@ class CarController extends GenericController<Car> {
   ): Promise<typeof response> {
     try {
       const newCar = await this.service.create(request.body);
-      console.log(newCar);
       if (!newCar) {
         return response.status(400).json({ error: this.errors.notFound });
       }
@@ -40,9 +39,25 @@ class CarController extends GenericController<Car> {
     response: Response<Car[] | ResponseError>,
   ): Promise<typeof response> {
     try {
-      const car = await this.service.read();
-      if (!car) return response.status(200).json([]);
-      console.log(car);
+      const cars = await this.service.read();
+      return response.status(200).json(cars);
+    } catch (error) {
+      console.log(error);
+      return response.status(500).json({ error: this.errors.internal });
+    }
+  }
+
+  async readOne(
+    request: RequestWithBody<Car>,
+    response: Response<Car | ResponseError>,
+  ): Promise<typeof response> {
+    try {
+      const { id } = request.params;
+      const car = await this.service.readOne(id);
+      if (!car) {
+        return response.status(400).json({ error: this.errors.notFound });
+      }
+      if ('error' in car) return response.status(400).json(car);
       return response.status(200).json(car);
     } catch (error) {
       console.log(error);

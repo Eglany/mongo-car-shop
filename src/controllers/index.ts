@@ -33,10 +33,10 @@ abstract class GenericController<T> {
     response: Response<T[] | ResponseError>,
   ): Promise<typeof response>;
 
-  // abstract readOne(
-  //   request: RequestWithBody<T>,
-  //   response: Response<T | ResponseError>,
-  // ): Promise<typeof response>;
+  abstract readOne(
+    request: RequestWithBody<T>,
+    response: Response<T | ResponseError>,
+  ): Promise<typeof response>;
 
   // abstract update(
   //   request: RequestWithBody<T>,

@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { isValidObjectId } from 'mongoose';
 import GenericController, { RequestWithBody, ResponseError } from '.';
 import { Car } from '../interfaces/CarInterface';
 import { Service } from '../interfaces/ServiceInterface';
@@ -53,12 +54,13 @@ class CarController extends GenericController<Car> {
   ): Promise<typeof response> {
     try {
       const { id } = request.params;
-      const car = await this.service.readOne(id);
-      if (!car) {
-        return response.status(400).json({ error: this.errors.notFound });
+      if (!isValidObjectId(id)) {
+        return response.status(400).json({ error: this.errors.badFormatId });
       }
-      if ('error' in car) return response.status(400).json(car);
-      return response.status(200).json(car);
+      const car = await this.service.readOne(id);
+      return car
+        ? response.status(200).json(car)
+        : response.status(404).json({ error: this.errors.notFound });
     } catch (error) {
       console.log(error);
       return response.status(500).json({ error: this.errors.internal });

@@ -1,10 +1,10 @@
 import { expect } from "chai";
-import Mongoose from "mongoose";
 import Sinon from "sinon";
 import CarModel from "../../../models/CarModel";
+import CarService from "../../../services/CarService";
 
 
-const carModel = new CarModel();
+const carService = new CarService();
 
 const carMock = {
 	model: 'cruze',
@@ -16,13 +16,12 @@ const carMock = {
 	seatsQty: 5
 }
 
-describe("Test CarModel", () => {
+describe("Test CarService", () => {
   let modelStub: Sinon.SinonStub;
-  // let isValidIdStub: Sinon.SinonStub;
 
   describe("method create", () => {
     before(() => {
-      modelStub = Sinon.stub(Mongoose.Model, "create");
+      modelStub = Sinon.stub(CarModel.prototype, "create");
       modelStub.resolves(carMock);
     });
 
@@ -30,10 +29,11 @@ describe("Test CarModel", () => {
       modelStub.restore();
     });
 
-    it("uccessfully created car", async () => {
-      const createdCar = await carModel.create(carMock);
+    it("successfully created car", async () => {
+      const createdCar = await carService.create(carMock);
 
       expect(createdCar).to.be.an("object");
+      
       expect(createdCar).to.have.property("model");
       expect(createdCar).to.have.property("year");
       expect(createdCar).to.have.property("color");
@@ -41,5 +41,5 @@ describe("Test CarModel", () => {
       expect(createdCar).to.have.property("doorsQty");
       expect(createdCar).to.have.property("seatsQty");
     });
-  });
+  })
 })

@@ -16,6 +16,25 @@ const carMock = {
 	seatsQty: 5
 }
 
+const carsMock = [{
+	model: 'cruze',
+	year: 2015,
+	color: 'gray',
+	status: false,
+	buyValue: 80000,
+	doorsQty: 4,
+	seatsQty: 5
+},
+{
+	model: 'fusca',
+	year: 1998,
+	color: 'red',
+	status: false,
+	buyValue: 20000,
+	doorsQty: 2,
+	seatsQty: 2
+}]
+
 describe("Test CarService", () => {
   let modelStub: Sinon.SinonStub;
 
@@ -42,4 +61,29 @@ describe("Test CarService", () => {
       expect(createdCar).to.have.property("seatsQty");
     });
   })
+  
+  describe("method read", () => {
+    before(() => {
+      modelStub = Sinon.stub(CarModel.prototype, "read");
+      modelStub.resolves(carsMock);
+    });
+
+    after(() => {
+      modelStub.restore();
+    });
+
+    it("successfully find all car", async () => {
+      const foundCars = await carService.read();
+
+      expect(foundCars).to.be.an("array");
+      expect(foundCars[0]).to.be.an("object");
+
+      expect(foundCars[0]).to.have.property("model");
+      expect(foundCars[0]).to.have.property("year");
+      expect(foundCars[0]).to.have.property("color");
+      expect(foundCars[0]).to.have.property("buyValue");
+      expect(foundCars[0]).to.have.property("doorsQty");
+      expect(foundCars[0]).to.have.property("seatsQty");
+    });
+  });
 })

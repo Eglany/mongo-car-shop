@@ -33,8 +33,7 @@ const carsMock = [{
 	buyValue: 20000,
 	doorsQty: 2,
 	seatsQty: 2
-}
-]
+}]
 
 describe("Test CarModel", () => {
   let modelStub: Sinon.SinonStub;
@@ -63,7 +62,7 @@ describe("Test CarModel", () => {
     });
   });
 
-  describe("Test method .read", () => {
+  describe("method read", () => {
     before(() => {
       modelStub = Sinon.stub(Mongoose.Model, "find");
       modelStub.resolves(carsMock);

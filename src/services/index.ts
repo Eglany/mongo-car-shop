@@ -1,3 +1,4 @@
+import { CarSchema } from '../interfaces/CarInterface';
 import { Model } from '../interfaces/ModelInterface';
 import { Service, ServiceError } from '../interfaces/ServiceInterface';
 
@@ -5,6 +6,8 @@ abstract class GenericService<T> implements Service<T> {
   constructor(protected model: Model<T>) { }
 
   async create(item: T): Promise<T | ServiceError | null > {
+    const parsed = CarSchema.safeParse(item);
+    if (!parsed.success) return { error: parsed.error };
     return this.model.create(item);
   }
 
@@ -16,7 +19,9 @@ abstract class GenericService<T> implements Service<T> {
     return this.model.readOne(id);
   }
 
-  async update(id: string, item: T): Promise<T | null > {
+  async update(id: string, item: T): Promise<T | ServiceError | null > {
+    const parsed = CarSchema.safeParse(item);
+    if (!parsed.success) return { error: parsed.error };
     return this.model.update(id, item);
   }
 

@@ -66,6 +66,48 @@ class CarController extends GenericController<Car> {
       return response.status(500).json({ error: this.errors.internal });
     }
   }
+
+  async update(
+    request: RequestWithBody<Car>,
+    response: Response<Car | ResponseError>,
+  ): Promise<typeof response> {
+    try {
+      const { id } = request.params;
+
+      if (!isValidObjectId(id)) {
+        return response.status(400).json({ error: this.errors.badFormatId });
+      }
+      const carUpdated = await this.service.update(id, request.body);
+      if (!carUpdated) {
+        return response.status(404).json({ error: this.errors.notFound });
+      }
+      if ('error' in carUpdated) return response.status(400).json(carUpdated);
+      return response.status(200).json(carUpdated);
+    } catch (error) {
+      console.log(error);
+      return response.status(500).json({ error: this.errors.internal });
+    }
+  }
+
+  async delete(
+    request: RequestWithBody<Car>,
+    response: Response<Car | ResponseError>,
+  ): Promise<typeof response> {
+    try {
+      const { id } = request.params;
+
+      if (!isValidObjectId(id)) {
+        return response.status(400).json({ error: this.errors.badFormatId });
+      }
+      const carDeleted = await this.service.update(id, request.body);
+      return carDeleted
+        ? response.status(204).json()
+        : response.status(404).json({ error: this.errors.notFound });
+    } catch (error) {
+      console.log(error);
+      return response.status(500).json({ error: this.errors.internal });
+    }
+  }
 }
 
 export default CarController;
